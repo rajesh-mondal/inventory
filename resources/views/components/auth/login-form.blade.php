@@ -9,7 +9,7 @@
                     <br/>
                     <input id="password" placeholder="User Password" class="form-control" type="password"/>
                     <br/>
-                    <button class="btn w-100 bg-gradient-primary">Next</button>
+                    <button onclick="SubmitLogin()" class="btn w-100 bg-gradient-primary">Next</button>
                     <hr/>
                     <div class="float-end mt-3">
                         <span>
@@ -26,8 +26,24 @@
 
 <script>
 
-    function SubmitLogin() {
-        
+    async function SubmitLogin() {
+        let email = document.getElementById('email').value;
+        let password = document.getElementById('password').value;
+
+        if (email.length == 0) {
+            errorToast("Email is required");
+        } else if (password.length == 0) {
+            errorToast("Password is required");
+        } else {
+            showLoader();
+            let res = await axios.post("/user-login",{email:email, password:password});
+            hideLoader();
+            if (res.status===200 && res.data['status']==='success') {
+                window.location.href="/dashboard";
+            } else {
+                errorToast(res.data['message']);
+            }
+        }
     }
 
 </script>
