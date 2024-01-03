@@ -30,7 +30,7 @@
                         </div>
                         <div class="row m-0 p-0">
                             <div class="col-md-4 p-2">
-                                <button class="btn mt-3 w-100  bg-gradient-primary">Complete</button>
+                                <button onclick="onRegistration()" class="btn mt-3 w-100  bg-gradient-primary">Complete</button>
                             </div>
                         </div>
                     </div>
@@ -42,8 +42,43 @@
 
 <script>
 
-    function onRegistration() {
-        
+    async function onRegistration() {
+        let email = document.getElementById('email').value;
+        let firstName = document.getElementById('firstName').value;
+        let lastName = document.getElementById('lastName').value;
+        let mobile = document.getElementById('mobile').value;
+        let password = document.getElementById('password').value;
+
+        if (email.length === 0) {
+            errorToast("Email is required");
+        } else if (firstName.length === 0) {
+            errorToast("First Name is required");
+        } else if (lastName.length === 0) {
+            errorToast("Last Name is required");
+        } else if (mobile.length === 0) {
+            errorToast("mobile Number is required");
+        } else if (password.length === 0) {
+            errorToast("Password is required");
+        } else {
+            showLoader();
+            let res = await axios.post("/user-registration",{
+                email: email,
+                firstName: firstName,
+                lastName: lastName,
+                mobile: mobile,
+                password: password,
+            });
+            hideLoader();
+            
+            if (res.status === 200 && res.data['status'] === 'success') {
+                successToast(res.data['message']);
+                setTimeout( function() {
+                    window.location.href = '/userLogin';
+                }, 2000);
+            } else {
+                errorToast(res.data['message']);
+            }
+        }
     }
 
 </script>
