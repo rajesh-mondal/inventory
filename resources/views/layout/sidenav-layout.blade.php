@@ -39,7 +39,7 @@
     <div class="container-fluid">
 
         <a class="navbar-brand" href="#">
-            <span class="icon-nav m-0 h5">
+            <span class="icon-nav m-0 h5" onclick="MenuBarClickHandler()">
                 <img class="nav-logo-sm mx-2"  src="{{asset('images/menu.svg')}}" alt="logo"/>
             </span>
             <img class="nav-logo  mx-2"  src="{{asset('images/logo.png')}}" alt="logo"/>
@@ -57,7 +57,7 @@
                     <a href="#" class="side-bar-item">
                         <span class="side-bar-item-caption">Profile</span>
                     </a>
-                    <a href="#" class="side-bar-item">
+                    <a href="{{url("/logout")}}" class="side-bar-item">
                         <span class="side-bar-item-caption">Logout</span>
                     </a>
                 </div>
@@ -78,7 +78,19 @@
 
 <script>
     function MenuBarClickHandler() {
-        
+        let sideNav = document.getElementById('sideNavRef');
+        let content = document.getElementById('contentRef');
+        if (sideNav.classList.contains("side-nav-open")) {
+            sideNav.classList.add("side-nav-close");
+            sideNav.classList.remove("side-nav-open");
+            content.classList.add("content-expand");
+            content.classList.remove("content");
+        } else {
+            sideNav.classList.remove("side-nav-close");
+            sideNav.classList.add("side-nav-open");
+            content.classList.remove("content-expand");
+            content.classList.add("content");
+        }
     }
 </script>
 

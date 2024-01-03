@@ -141,4 +141,8 @@ class UserController extends Controller
             ], 401 );
         }
     }
+
+    function userLogout( Request $request ){
+        return redirect( '/userLogin' )->cookie( 'token', '', -1 );
+    }
 }
