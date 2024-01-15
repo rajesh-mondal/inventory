@@ -39,8 +39,11 @@
         let res = await axios.get("/list-category");
         hideLoader();
 
-        let tableList = $('#tableList')
-        let tableData = $('#tableData')
+        let tableList = $('#tableList');
+        let tableData = $('#tableData');
+
+        tableData.DataTable().destroy();
+        tableList.empty();
 
         res.data.forEach(function(item, index) {
             let row = `<tr>
