@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\TokenVerificationMiddleware;
@@ -45,3 +46,9 @@ Route::post( '/create-category', [CategoryController::class, 'CategoryCreate'] )
 Route::get( '/list-category', [CategoryController::class, 'CategoryList'] )->middleware( [TokenVerificationMiddleware::class] );
 Route::post( '/delete-category', [CategoryController::class, 'CategoryDelete'] )->middleware( [TokenVerificationMiddleware::class] );
 Route::post( '/update-category', [CategoryController::class, 'CategoryUpdate'] )->middleware( [TokenVerificationMiddleware::class] );
+
+// Customer API
+Route::post( '/create-customer', [CustomerController::class, 'CustomerCreate'] )->middleware( [TokenVerificationMiddleware::class] );
+Route::get( '/list-customer', [CustomerController::class, 'CustomerList'] )->middleware( [TokenVerificationMiddleware::class] );
+Route::post( '/delete-customer', [CustomerController::class, 'CustomerDelete'] )->middleware( [TokenVerificationMiddleware::class] );
+Route::post( '/update-customer', [CustomerController::class, 'CustomerUpdate'] )->middleware( [TokenVerificationMiddleware::class] );
