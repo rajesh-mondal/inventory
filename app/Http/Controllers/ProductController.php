@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller {
     function ProductPage() {
@@ -32,5 +33,13 @@ class ProductController extends Controller {
             'category_id' => $request->input( 'category_id' ),
             'user_id'     => $user_id,
         ] );
+    }
+
+    function DeleteProduct( Request $request ) {
+        $user_id = $request->header( 'id' );
+        $product_id = $request->input( 'id' );
+        $filePath = $request->input( 'file_path' );
+        File::delete( $filePath );
+        return Product::where( 'id', $product_id )->where( 'user_id', $user_id )->delete();
     }
 }

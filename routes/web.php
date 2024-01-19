@@ -60,6 +60,6 @@ Route::post( '/customer-by-id', [CustomerController::class, 'CustomerById'] )->m
 // Product API
 Route::post( '/create-product', [ProductController::class, 'CreateProduct'] )->middleware( [TokenVerificationMiddleware::class] );
 Route::get( '/list-product', [ProductController::class, 'ProductList'] )->middleware( [TokenVerificationMiddleware::class] );
-Route::post( '/delete-product', [ProductController::class, 'ProductDelete'] )->middleware( [TokenVerificationMiddleware::class] );
-Route::post( '/update-product', [ProductController::class, 'ProductUpdate'] )->middleware( [TokenVerificationMiddleware::class] );
+Route::post( '/delete-product', [ProductController::class, 'DeleteProduct'] )->middleware( [TokenVerificationMiddleware::class] );
+Route::post( '/update-product', [ProductController::class, 'UpdateProduct'] )->middleware( [TokenVerificationMiddleware::class] );
 Route::post( '/product-by-id', [ProductController::class, 'ProductById'] )->middleware( [TokenVerificationMiddleware::class] );
