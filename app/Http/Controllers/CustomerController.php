@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 
-class CustomerController extends Controller
+class CustomerController extends Controller 
 {
     function CustomerPage() {
         return view( 'pages.dashboard.customer-page' );
@@ -20,8 +20,8 @@ class CustomerController extends Controller
         $user_id = $request->header( 'id' );
         return Customer::create( [
             'name'    => $request->input( 'name' ),
-            'email'    => $request->input( 'email' ),
-            'mobile'    => $request->input( 'mobile' ),
+            'email'   => $request->input( 'email' ),
+            'mobile'  => $request->input( 'mobile' ),
             'user_id' => $user_id,
         ] );
     }
@@ -30,10 +30,16 @@ class CustomerController extends Controller
         $customer_id = $request->input( 'id' );
         $user_id = $request->header( 'id' );
         return Customer::where( 'id', $customer_id )->where( 'user_id', $user_id )->update( [
-            'name' => $request->input( 'name' ),
-            'email' => $request->input( 'email' ),
-            'mobile'    => $request->input( 'mobile' ),
+            'name'   => $request->input( 'name' ),
+            'email'  => $request->input( 'email' ),
+            'mobile' => $request->input( 'mobile' ),
         ] );
+    }
+
+    function CustomerById( Request $request ) {
+        $customer_id = $request->input( 'id' );
+        $user_id = $request->header( 'id' );
+        return Customer::where( 'id', $customer_id )->where( 'user_id', $user_id )->first();
     }
 
     function CustomerDelete( Request $request ) {
@@ -41,6 +47,5 @@ class CustomerController extends Controller
         $user_id = $request->header( 'id' );
         return Customer::where( 'id', $customer_id )->where( 'user_id', $user_id )->delete();
     }
-
 
 }
