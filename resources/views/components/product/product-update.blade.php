@@ -101,7 +101,7 @@
             formData.append('id', updateID)
             formData.append('name', productNameUpdate)
             formData.append('price', productPriceUpdate)
-            formData.append('unit', productNameUpdate)
+            formData.append('unit', productUnitUpdate)
             formData.append('category_id', productCategoryUpdate)
             formData.append('file_path', filePath)
 
