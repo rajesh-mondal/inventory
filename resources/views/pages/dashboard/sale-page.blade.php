@@ -131,18 +131,109 @@
           hideLoader();
         })()
 
+        let InvoiceItemList=[];
+
+        function ShowInvoiceItem() {
+            let invoiceList=$('#invoiceList');
+
+            invoiceList.empty();
+
+            InvoiceItemList.forEach(function (item,index) {
+                let row=`<tr class="text-xs">
+                        <td>${item['product_name']}</td>
+                        <td>${item['qty']}</td>
+                        <td>${item['sale_price']}</td>
+                        <td><a data-index="${index}" class="btn remove text-xxs px-2 py-1  btn-sm m-0">Remove</a></td>
+                    </tr>`
+                invoiceList.append(row)
+            })
+
+            CalculateGrandTotal();
+
+            $('.remove').on('click', async function () {
+                let index= $(this).data('index');
+                removeItem(index);
+            })
+        }
+
+        function removeItem(index) {
+            InvoiceItemList.splice(index,1);
+            ShowInvoiceItem()
+        }
+
+        function DiscountChange() {
+            CalculateGrandTotal();
+        }
+
+        function CalculateGrandTotal(){
+            let Total = 0;
+            let Vat = 0;
+            let Payable = 0;
+            let Discount = 0;
+            let discountPercentage = (parseFloat(document.getElementById('discountP').value));
+
+            InvoiceItemList.forEach((item,index)=>{
+                Total = Total+parseFloat(item['sale_price'])
+            })
+
+             if(discountPercentage === 0){
+                 Vat = ((Total*5)/100).toFixed(2);
+             }
+             else {
+                 Discount = ((Total*discountPercentage)/100).toFixed(2);
+                 Total = (Total-((Total*discountPercentage)/100)).toFixed(2);
+                 Vat = ((Total*5)/100).toFixed(2);
+             }
+
+             Payable = (parseFloat(Total)+parseFloat(Vat)).toFixed(2);
+
+            document.getElementById('total').innerText = Total;
+            document.getElementById('payable').innerText = Payable;
+            document.getElementById('vat').innerText = Vat;
+            document.getElementById('discount').innerText = Discount;
+        }
+
+        function add() {
+           let PId = document.getElementById('PId').value;
+           let PName = document.getElementById('PName').value;
+           let PPrice =document.getElementById('PPrice').value;
+           let PQty = document.getElementById('PQty').value;
+
+           let PTotalPrice =(parseFloat(PPrice)*parseFloat(PQty)).toFixed(2);
+           
+           if(PId.length === 0){
+               errorToast("Product ID Required");
+           }
+           else if(PName.length === 0){
+               errorToast("Product Name Required");
+           } 
+           else if(PPrice.length === 0){
+               errorToast("Product Price Required");
+           }
+           else if(PQty.length === 0){
+               errorToast("Product Quantity Required");
+           }
+           else{
+               let item={product_name:PName,product_id:PId,qty:PQty,sale_price:PTotalPrice};
+               InvoiceItemList.push(item);
+               console.log(InvoiceItemList);
+               $('#create-modal').modal('hide')
+               ShowInvoiceItem();
+           }
+        }
+
         function addModal(id,name,price) {
-            document.getElementById('PId').value=id
-            document.getElementById('PName').value=name
-            document.getElementById('PPrice').value=price
+            document.getElementById('PId').value = id
+            document.getElementById('PName').value = name
+            document.getElementById('PPrice').value = price
             $('#create-modal').modal('show')
         }
 
         async function CustomerList(){
-            let res=await axios.get("/list-customer");
-            let customerList=$("#customerList");
-            let customerTable=$("#customerTable");
-            customerTable.DataTable().destroy();
+            let res = await axios.get("/list-customer");
+            let customerList = $("#customerList");
+            let customerTable = $("#customerTable");
+            customerTable.DataTable().destroy(); 
             customerList.empty();
 
             res.data.forEach(function (item,index) {
@@ -155,14 +246,13 @@
 
             $('.addCustomer').on('click', async function () {
 
-                let CName= $(this).data('name');
-                let CEmail= $(this).data('email');
-                let CId= $(this).data('id');
+                let CName = $(this).data('name');
+                let CEmail = $(this).data('email');
+                let CId = $(this).data('id');
 
                 $("#CName").text(CName)
                 $("#CEmail").text(CEmail)
                 $("#CId").text(CId)
-
             })
 
             new DataTable('#customerTable',{
@@ -174,10 +264,10 @@
         }
 
         async function ProductList(){
-            let res=await axios.get("/list-product");
-            let productList=$("#productList");
-            let productTable=$("#productTable");
-            productTable.DataTable().destroy();
+            let res = await axios.get("/list-product");
+            let productList = $("#productList");
+            let productTable = $("#productTable");
+            productTable.DataTable().destroy( );
             productList.empty();
 
             res.data.forEach(function (item,index) {
@@ -190,9 +280,9 @@
 
 
             $('.addProduct').on('click', async function () {
-                let PName= $(this).data('name');
-                let PPrice= $(this).data('price');
-                let PId= $(this).data('id');
+                let PName = $(this).data('name');
+                let PPrice = $(this).data('price');
+                let PId = $(this).data('id');
                 addModal(PId,PName,PPrice)
             })
 
