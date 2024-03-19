@@ -295,6 +295,44 @@
             });
         }
 
+        async  function createInvoice() {
+            let total = document.getElementById('total').innerText;
+            let discount = document.getElementById('discount').innerText
+            let vat = document.getElementById('vat').innerText
+            let payable = document.getElementById('payable').innerText
+            let CId = document.getElementById('CId').innerText;
+
+            let Data = {
+                "total":total,
+                "discount":discount,
+                "vat":vat,
+                "payable":payable,
+                "customer_id":CId,
+                "products":InvoiceItemList
+            }
+
+            if(CId.length === 0){
+                errorToast("Customer Required!")
+            }
+            else if(InvoiceItemList.length === 0){
+                errorToast("Product Required!")
+            }
+            else{
+
+                showLoader();
+                let res=await axios.post("/invoice-create",Data)
+                hideLoader();
+                if(res.data === 1){
+                    window.location.href = '/invoicePage'
+                    successToast("Invoice Created");
+                }
+                else{
+                    errorToast("Something Went Wrong")
+                }
+            }
+
+        }
+
     </script>
 
 @endsection
